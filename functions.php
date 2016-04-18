@@ -12,7 +12,7 @@ function acm_get_cron_arguments($args) {
 	$ret = '';
 
 	foreach ($args as $arg) {
-		
+
 		$ret .= $arg.'<br />';
 
 	}
@@ -25,7 +25,11 @@ function acm_get_next_cron_execution($timestamp) {
 	if ($timestamp - time() <= 0)
 		return __('At next page refresh', 'acm');
 
-	return __('In', 'acm').' '.human_time_diff( current_time('timestamp'), $timestamp ).'<br>'.date("d.m.Y H:i:s", $timestamp);
+	$time_offset = get_option( 'gmt_offset' ) * 3600;
+	$date_format = get_option( 'date_format' );
+	$time_format = get_option( 'time_format' );
+
+	return __('In', 'acm').' '.human_time_diff( current_time('timestamp'), $timestamp ). '<br>' . date( "{$date_format} {$time_format}", $timestamp + $time_offset ) . '<br><small><em>GMT: '. date( "{$date_format} {$time_format}", $timestamp) .'</small></em>';
 
 }
 

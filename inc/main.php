@@ -5,8 +5,6 @@
 */
 class ACMmain {
 
-	public $time_offset;
-
 	public $ajax;
 
 	public $crons = array();
@@ -28,7 +26,7 @@ class ACMmain {
 			'daily',
 			'twicedaily',
 		);
-	
+
 	public function __construct() {
 
 		$this->ajax = new ACMajax();
@@ -42,8 +40,6 @@ class ACMmain {
 
 		add_filter( 'cron_schedules', array($this, 'add_schedules_to_filter') );
 
-		$this->time_offset = get_option('gmt_offset') * 3600;
-		
 		add_action('admin_menu', array($this, 'add_menu_page'));
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts_and_styles'));
 
@@ -63,7 +59,7 @@ class ACMmain {
 			);
 
 		}
-		
+
 		return $schedules;
 
 	}
@@ -114,12 +110,12 @@ class ACMmain {
 	public function parse_crons() {
 
 		foreach (_get_cron_array() as $timestamp => $crons) {
-			
+
 			foreach ($crons as $cron_name => $cron_args) {
 
 				foreach ($cron_args as $cron) {
-					
-					$this->crons[$timestamp + $this->time_offset][] = array(
+
+					$this->crons[$timestamp][] = array(
 						'hook' => $cron_name,
 						'cron' => $cron,
 						'hash' => acm_get_cron_hash($cron_name, $timestamp, $cron['args'], (!isset($cron['interval'])) ? 0 : $cron['interval'])
@@ -190,7 +186,7 @@ class ACMmain {
 		$this->settings_array = apply_filters( 'acm_settings', $this->settings_array );
 
 		if ( ! empty( $this->settings_array ) ) {
-			
+
 			echo '<div id="settings" class="postbox ">
 					<h3>'.__('Settings', 'acm').'</h3>
 					<div class="inside">
@@ -201,7 +197,7 @@ class ACMmain {
 				</div>';
 
 		}
-		
+
 		echo '<div id="popslide" class="postbox ">
 				<h3>'.__('Check this out!', 'acm').'</h3>
 				<div class="inside">';
@@ -226,7 +222,7 @@ class ACMmain {
 	public function display_settings_widget() {
 
 		foreach ( $this->settings_array as $key => $setting ) {
-			
+
 			echo '<p>';
 
 				if ( isset( $setting['label'] ) && ! empty( $setting['label'] ) ) {
@@ -238,24 +234,24 @@ class ACMmain {
 						case 'hidden':
 						case 'number':
 							$value = empty( $this->settings[ $key ] ) ? $setting['default'] : $this->settings[ $key ];
-							$class = empty( $setting['class'] ) ? '' : $setting['class']; 
-							$placeholder = empty( $setting['placeholder'] ) ? '' : $setting['placeholder']; 
+							$class = empty( $setting['class'] ) ? '' : $setting['class'];
+							$placeholder = empty( $setting['placeholder'] ) ? '' : $setting['placeholder'];
 							echo '<input type="' . $setting['type'] . '" class="' . $class . '" name="' . $key . '" id="acm-setting-' . $key . '" placeholder="' . $placeholder . '" value="' . $value . '">';
 							break;
 
 						case 'checkbox':
 							$checked = empty( $this->settings[ $key ] ) ? $setting['default'] : $this->settings[ $key ];
-							$class = empty( $setting['class'] ) ? '' : $setting['class']; 
+							$class = empty( $setting['class'] ) ? '' : $setting['class'];
 							echo '<input type="' . $setting['type'] . '" class="' . $class . '" name="' . $key . '" id="acm-setting-' . $key . '" value="true" ' . checked( true, $checked, false ) . '>';
 							break;
 
 						case 'button':
-							$class = empty( $setting['class'] ) ? '' : $setting['class']; 
-							$id = empty( $setting['id'] ) ? '' : $setting['id']; 
-							$data = empty( $setting['data'] ) ? '' : $setting['data']; 
+							$class = empty( $setting['class'] ) ? '' : $setting['class'];
+							$id = empty( $setting['id'] ) ? '' : $setting['id'];
+							$data = empty( $setting['data'] ) ? '' : $setting['data'];
 							echo '<button class="' . $class . '" id="' . $id . '" ' . $data . '>' . $setting['text'] . '</button>';
 							break;
-						
+
 						default:
 							echo '';
 							break;
@@ -290,7 +286,7 @@ class ACMmain {
 			echo '<li id="single-schedule-'.$name.'">';
 				echo $name.' - '.$schedule['display'];
 				echo $this->get_schedule_actions($name);
-				
+
 			echo'</li>';
 		}
 
@@ -334,7 +330,7 @@ class ACMmain {
 				<span id="add-schedule-indicator" class="spinner" style="display: none;"></span>
 				<input type="submit" id="add-schedule" data-noonce="<?php echo wp_create_nonce('add_schedule'); ?>" name="add-schedule" class="button-primary" value="<?php _e('Add schedule', 'acm'); ?>" />
 			</div>
-			
+
 		</form>
 
 		<?php
@@ -373,13 +369,13 @@ class ACMmain {
 	public function display_cron_table_body() {
 
 		$alternate = '';
-		
+
 		foreach ($this->crons as $timestamp => $cron_many) {
 
 			foreach ($cron_many as $cron) {
-				
+
 				$alternate = ($alternate == '') ? 'alternate' : '';
-			
+
 				echo '<tr class="single-cron cron-'.$cron['hash'].' '.$alternate.'">';
 					echo '<td class="column-hook">';
 						echo $cron['hook'];
@@ -405,7 +401,7 @@ class ACMmain {
 	public function add_task_row($alternate) {
 
 		$alternate = ($alternate == '') ? 'alternate' : '';
-		
+
 		echo '<tr id="add_task_row" class="'.$alternate.'">';
 			echo '<td colspan="5">';
 				echo '<button id="show_task_form" class="button-secondary">'.__('Add Task', 'acm').'</button>';
@@ -423,7 +419,7 @@ class ACMmain {
 					<span><?php _e('Execute now', 'acm'); ?> +</span>
 					<span><input type="number" id="timestamp_offset" name="timestamp_offset" required min="0" value="0" /> </span>
 					<span><?php _e('seconds', 'acm'); ?>. </span>
-					
+
 					<span><?php _e('Then repeat', 'acm'); ?></span>
 					<span><select id="select-schedule" name="schedule" required >
 						<?php foreach ($this->schedules as $name => $schedule) {
@@ -454,7 +450,7 @@ class ACMmain {
 		echo '<div class="row-actions">';
 
 			if ( in_array($cron, $this->protected_crons) ) {
-				
+
 				_e('Task protected', 'acm');
 
 			} else {

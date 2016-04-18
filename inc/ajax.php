@@ -40,7 +40,7 @@ class ACMajax {
 		$schedules = array_merge($schedules_opt, $schedules_arr);
 
 		$params['name'] = strtolower(trim( str_replace(' ', '_', $params['name']) ));
-		
+
 		foreach ($schedules as $name => $schedule) {
 
 			// Return error when there is that schedule already
@@ -68,7 +68,7 @@ class ACMajax {
 		die( json_encode( array('status' => 'success', 'li' => $li, 'select' => $select) ) );
 
 
-	}	
+	}
 
 	public function remove_schedule() {
 
@@ -133,8 +133,6 @@ class ACMajax {
 
 		// Render new table row
 
-		$wptime_offset = get_option('gmt_offset') * 3600;
-
 		$table = '<tr class="single-cron cron-added-new">';
 			$table .= '<td class="column-hook">';
 				$table .= $hook;
@@ -143,7 +141,7 @@ class ACMajax {
 				$table .= $params['schedule'];
 			$table .= '</td>';
 			$table .= '<td class="column-args">'.acm_get_cron_arguments($args).'</td>';
-			$table .= '<td class="column-next">'.acm_get_next_cron_execution($timestamp+$wptime_offset).'</td>';
+			$table .= '<td class="column-next">'.acm_get_next_cron_execution($timestamp).'</td>';
 			$table .= '<td class="column-next"><a id="execute_task" data-task="'.$hook.'" data-noonce="'.wp_create_nonce('execute_task_'.$hook).'" data-args="'.implode(',', $args).'" class="button-secondary">'.__('Execute', 'acm').'</a></td>';
 		$table .= '</tr>';
 
@@ -190,11 +188,11 @@ class ACMajax {
 			}
 
 			do_action_ref_array( $params['task'], $args );
-			
+
 		} else {
 			do_action( $params['task'] );
 		}
-		
+
 		ob_end_clean();
 
 		die( json_encode( array('status' => 'success') ) );
@@ -224,20 +222,20 @@ class ACMajax {
 		// license handle
 		if ( isset( $settings['license'] )  && ! empty( $settings['license'] ) ) {
 
-			$api_params = array( 
-				'edd_action'=> 'activate_license', 
-				'license' 	=> $settings['license'], 
+			$api_params = array(
+				'edd_action'=> 'activate_license',
+				'license' 	=> $settings['license'],
 				'item_name' => urlencode( ACMPRO_NAME ),
 				'url'       => home_url()
 			);
-			
+
 			$response = wp_remote_get( add_query_arg( $api_params, ACMPRO_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
 
 			if ( is_wp_error( $response ) )
 				die( json_encode( array('status' => 'error', 'details' => __('Couldn\'t activate your license file. Please try again.', 'acm')) ) );
 
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-			
+
 			if (  ! isset( $license_data->license ) || $license_data->license != 'valid' ) {
 				die( json_encode( array('status' => 'error', 'details' => __('Wrong license key. Please ensure you entered correct one.', 'acm')) ) );
 			}
@@ -269,20 +267,20 @@ class ACMajax {
 
 		if ( isset( $settings['license'] )  && ! empty( $settings['license'] ) ) {
 
-			$api_params = array( 
-				'edd_action'=> 'deactivate_license', 
-				'license' 	=> $settings['license'], 
+			$api_params = array(
+				'edd_action'=> 'deactivate_license',
+				'license' 	=> $settings['license'],
 				'item_name' => urlencode( ACMPRO_NAME ),
 				'url'       => home_url()
 			);
-			
+
 			$response = wp_remote_get( add_query_arg( $api_params, ACMPRO_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
 
 			if ( is_wp_error( $response ) )
 				die( json_encode( array('status' => 'error', 'details' => __('Sorry, something goes wrong.', 'acm')) ) );
 
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-			
+
 			if ( $license_data->license == 'deactivated' ) {
 
 				unset( $settings['license'] );

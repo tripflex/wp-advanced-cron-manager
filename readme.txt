@@ -1,12 +1,12 @@
-=== Advanced Cron Manager - debug & control ===
-Contributors: Kubitomakita
+=== WP Advanced Cron Manager ===
+Contributors: tripflex, Kubitomakita
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=contact%40jmikita%2ecom&lc=US&item_name=Advanced%20Cron%20Manager&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Tags: cron, wp cron, manager, cron manager
-Requires at least: 3.6
-Tested up to: 4.3
-Stable tag: 1.4.3
-License: GPLv2
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: cron, wp cron, manager, cron manager, add cron, execute cron, run cron
+Requires at least: 3.8
+Tested up to: 4.5
+Stable tag: 2.0.0
+License: GPLv3+
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Advanced manager for WordPress Cron tasks and schedules. Adding, removing and viewing with a few clicks. 
 
@@ -24,7 +24,7 @@ Plugin use AJAX request so you'll need enabled Javascript in order to use it.
 
 PRO version includes
 
-* Cron Logger - log cron executions easly
+* Cron Logger - log cron executions
 
 [Buy now](http://underdev.it/downloads/advanced-cron-manager-pro/ "Advanced Cron Manager PRO")
 
@@ -40,7 +40,7 @@ Plugin supports i18n. If you would like to translate it grab a .po file, transla
 
 == Installation ==
 
-1. Upload `acmanager.php` to the `/wp-content/plugins/` directory
+1. Upload `wp-advanced-cron-manager` directory to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 Plugin's page sits under Tools menu item.
@@ -61,6 +61,15 @@ It's used for action. For example if your hook is hook_name you'll need to add i
 1. Plugin control panel
 
 == Changelog ==
+
+= 2.0.0 =
+* Fork of Advanced Cron Manager created, major version bump to 2.0.0 to differentiate between source of fork
+* Fixed “On next page load” incorrectly showing when not true
+* Fixed output next run time
+* Next run now shows GMT time AND local time based on WordPress timezone settings
+* Next run date format now uses WordPress date format by default
+* Next run time format now uses WordPress time format by default
+* Fixed output PHP warning and error for cron args when argument is an array
 
 = 1.4.3 =
 * Metabox promo update
