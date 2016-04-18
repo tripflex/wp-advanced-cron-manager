@@ -1,11 +1,13 @@
 <?php
 /**
- * Plugin Name: Advanced Cron Manager
- * Description: Plugin that allow to view, remove, edit and add WP Cron tasks. 
- * Version: 1.4.3
- * Author: Kuba Mikita
+ * Plugin Name: WP Advanced Cron Manager
+ * Description: Plugin that allow to view, remove, edit and add WP Cron tasks.
+ * Version: 2.0.0
+ * Author: Kuba Mikita, Myles McNamara
+ * Contributors: tripflex, Kubitomakita
  * Author URI: http://www.wpart.pl/
- * License: GPL2
+ * Author URI: http://smyl.es
+ * License: GPL3
  * Text Domain: acm
  */
 
@@ -33,5 +35,5 @@ $acm = new ACMmain();
 
 add_action('plugins_loaded', 'acm_load_textdomain');
 function acm_load_textdomain() {
-	load_plugin_textdomain('acm', false, dirname(plugin_basename( __FILE__ )).'/lang/'); 
+	load_plugin_textdomain('acm', false, dirname(plugin_basename( __FILE__ )).'/lang/');
 }
