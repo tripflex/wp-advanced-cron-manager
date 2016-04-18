@@ -158,6 +158,7 @@ class ACMajax {
 			die( json_encode( array('status' => 'error', 'details' => __('Sorry, wrong noonce.', 'acm')) ) );
 
 		$args = (empty($params['args'])) ? array() : explode(',', $params['args']);
+
 		$timestamp = wp_next_scheduled($params['task'], $args);
 
 		$hash = acm_get_cron_hash($params['task'], $timestamp, $args, (!isset($params['interval'])) ? 0 : $params['interval']);
@@ -183,9 +184,7 @@ class ACMajax {
 
 		if ( isset( $params['args'] ) && ! empty( $params['args'] ) ) {
 
-			if ( is_string( $params['args'] ) ) {
-				$args = explode( ',', $params['args'] );
-			}
+			$args = is_string( $params['args'] ) ? explode( ',', $params['args'] ) : $params['args'];
 
 			do_action_ref_array( $params['task'], $args );
 
