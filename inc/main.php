@@ -6,7 +6,7 @@
 class ACMmain {
 
 	public $ajax;
-	public $offset;
+	public $time_offset;
 
 	public $crons = array();
 	public $schedules = array();
@@ -32,7 +32,7 @@ class ACMmain {
 
 		$this->ajax = new ACMajax();
 		// Set offset to 0 to prevent pro addon PHP warnings
-		$this->offset = 0;
+		$this->time_offset = 0;
 
 		$this->acm_schedules = get_option('acm_schedules', array());
 
@@ -371,6 +371,7 @@ class ACMmain {
 			foreach ($cron_many as $cron) {
 
 				$alternate = ($alternate == '') ? 'alternate' : '';
+				$cron_args = bin2hex( maybe_serialize( $cron['cron']['args'] ) );
 
 				echo '<tr class="single-cron cron-'.$cron['hash'].' '.$alternate.'">';
 					echo '<td class="column-hook">';
@@ -382,7 +383,7 @@ class ACMmain {
 					echo '</td>';
 					echo '<td class="column-args">'.acm_get_cron_arguments($cron['cron']['args']).'</td>';
 					echo '<td class="column-next" data-timestamp="'.$timestamp.'">'.acm_get_next_cron_execution($timestamp).'</td>';
-					echo '<td class="column-action"><a class="execute-task button-secondary" data-task="'.$cron['hook'].'" data-noonce="'.wp_create_nonce('execute_task_'.$cron['hook']).'" data-args="'.implode(',', $cron['cron']['args']).'">'.__('Execute', 'acm').'</a></td>';
+					echo '<td class="column-action"><a class="execute-task button-secondary" data-task="'.$cron['hook'].'" data-noonce="'.wp_create_nonce('execute_task_'.$cron['hook']).'" data-args="'. $cron_args .'">'.__('Execute', 'acm').'</a></td>';
 				echo '</tr>';
 
 			}
