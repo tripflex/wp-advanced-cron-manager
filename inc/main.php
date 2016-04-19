@@ -201,13 +201,6 @@ class ACMmain {
 
 		}
 
-		echo '<div id="popslide" class="postbox ">
-				<h3>'.__('Check this out!', 'acm').'</h3>
-				<div class="inside">';
-					$this->display_popslide_widget();
-		echo	'</div>
-			</div>';
-
 	}
 
 	public function display_informations_widget() {
