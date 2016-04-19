@@ -113,7 +113,7 @@ class ACMajax {
 		// Prepare vars
 		$hook = strtolower(trim( str_replace(' ', '_', $params['hook']) ));
 		$timestamp = time() + $params['offset'];
-		$args = (empty($params['args'])) ? array() : explode(',', $params['args']);
+		$args = (empty($params['args'])) ? array() : maybe_unserialize( hex2bin( $params['args'] ) );
 
 		if ( $params['schedule'] == 'single' ) { // schedule single event
 
@@ -184,7 +184,7 @@ class ACMajax {
 
 		if ( isset( $params['args'] ) && ! empty( $params['args'] ) ) {
 
-			$args = is_string( $params['args'] ) ? explode( ',', $params['args'] ) : $params['args'];
+			$args = (empty($params['args'])) ? array() : maybe_unserialize( hex2bin( $params['args'] ) );
 
 			do_action_ref_array( $params['task'], $args );
 
