@@ -1,7 +1,6 @@
 === WP Advanced Cron Manager ===
 Contributors: tripflex, Kubitomakita
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=contact%40jmikita%2ecom&lc=US&item_name=Advanced%20Cron%20Manager&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Tags: cron, wp cron, manager, cron manager, add cron, execute cron, run cron
+Tags: cron, wp cron, manager, cron manager, add cron, execute cron, run cron, add cron, custom cron, cron list, remove cron, delete cron
 Requires at least: 3.8
 Tested up to: 4.5
 Stable tag: 2.0.0
