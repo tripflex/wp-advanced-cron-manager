@@ -157,7 +157,7 @@ class ACMajax {
 		if ( !wp_verify_nonce($params['noonce'], 'remove_task_'.$params['task']) )
 			die( json_encode( array('status' => 'error', 'details' => __('Sorry, wrong noonce.', 'acm')) ) );
 
-		$args = (empty($params['args'])) ? array() : explode(',', $params['args']);
+		$args = (empty($params['args'])) ? array() : maybe_unserialize( hex2bin( $params['args'] ) );
 
 		$timestamp = wp_next_scheduled($params['task'], $args);
 

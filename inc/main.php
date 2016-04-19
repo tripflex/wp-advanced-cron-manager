@@ -6,6 +6,7 @@
 class ACMmain {
 
 	public $ajax;
+	public $offset;
 
 	public $crons = array();
 	public $schedules = array();
@@ -30,6 +31,8 @@ class ACMmain {
 	public function __construct() {
 
 		$this->ajax = new ACMajax();
+		// Set offset to 0 to prevent pro addon PHP warnings
+		$this->offset = 0;
 
 		$this->acm_schedules = get_option('acm_schedules', array());
 
@@ -454,9 +457,10 @@ class ACMmain {
 				_e('Task protected', 'acm');
 
 			} else {
-
+				
+				$args = bin2hex( maybe_serialize( $args ) );
 				// echo '<span class="edit"><a href="#" data-noonce="'.wp_create_nonce( 'edit_task_'.$cron ).'">'.__('Edit', 'acm').'</a> | ';
-				echo '<span class="trash"><a data-confirm="'.sprintf(__('Are you sure you want to delete %s task?', 'acm' ), $cron ).'" class="remove-task" data-interval="'.$interval.'" data-args="'.implode(",", $args).'" data-task="'.$cron.'" data-noonce="'.wp_create_nonce( 'remove_task_'.$cron ).'">'.__('Remove', 'acm').'</a>';
+				echo '<span class="trash"><a data-confirm="'.sprintf(__('Are you sure you want to delete %s task?', 'acm' ), $cron ).'" class="remove-task" data-interval="'.$interval.'" data-args="'.$args.'" data-task="'.$cron.'" data-noonce="'.wp_create_nonce( 'remove_task_'.$cron ).'">'.__('Remove', 'acm').'</a>';
 
 			}
 

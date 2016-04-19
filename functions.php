@@ -13,7 +13,11 @@ function acm_get_cron_arguments($args) {
 
 	foreach ($args as $arg) {
 
-		$ret .= $arg.'<br />';
+		if( is_array( $arg ) ){
+			$ret .= print_r( $arg, TRUE ) . '<br />';
+		} else {
+			$ret .= $arg . '<br />';
+		}
 
 	}
 
@@ -41,4 +45,17 @@ function acm_format_time( $timestamp ) {
 
 	return '<span title="' . human_time_diff( current_time('timestamp'), $timestamp ) . ' ' . __( 'ago', 'acm' ) . '">' . acm_get_gmt_and_local_time( $timestamp ) . '</span>';
 
+}
+
+if( ! function_exists( 'hex2bin' ) ) {
+	function hex2bin( $str ) {
+
+		$sbin = "";
+		$len  = strlen( $str );
+		for( $i = 0; $i < $len; $i += 2 ) {
+			$sbin .= pack( "H*", substr( $str, $i, 2 ) );
+		}
+
+		return $sbin;
+	}
 }
