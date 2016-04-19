@@ -1,4 +1,7 @@
 # WP Advanced Cron Manager #
+
+![screenshot](https://smyl.es/img/Screenshot_2016-04-18_10-04-59_PM.png)
+
 **Contributors:** tripflex, Kubitomakita
   
 **Tags:** cron, wp cron, manager, cron manager, add cron, execute cron, run cron, add cron, custom cron, cron list, remove cron, delete cron
